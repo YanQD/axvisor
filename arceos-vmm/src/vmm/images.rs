@@ -21,24 +21,24 @@ pub fn load_vm_images(config: AxVMCrateConfig, vm: VMRef) -> AxResult {
 /// Load VM images from memory
 /// into the guest VM's memory space based on the VM configuration.
 fn load_vm_images_from_memory(config: AxVMCrateConfig, vm: VMRef) -> AxResult {
-    info!("Loading VM[{}] images from memory", config.id);
+    info!("Loading VM images from memory");
 
-    let vm_imags = config::get_memory_images()
-        .iter()
-        .find(|&v| v.id == config.id)
-        .expect("VM images is missed, Perhaps add `VM_CONFIGS=PATH/CONFIGS/FILE` command.");
-
-    load_vm_image_from_memory(vm_imags.kernel, config.kernel_load_addr, vm.clone())
-        .expect("Failed to load VM images");
+    // Load kernel image.
+    if let Some(buffer) = config::get_kernel_binary() {
+        load_vm_image_from_memory(buffer, config.kernel_load_addr, vm.clone())
+            .expect("Failed to load VM images");
+    } else {
+        panic!("VM images is missed, Perhaps add `VM_CONFIGS=PATH/CONFIGS/FILE` command.");
+    }
 
     // Load DTB image
-    if let Some(buffer) = vm_imags.dtb {
+    if let Some(buffer) = config::get_dtb_binary() {
         load_vm_image_from_memory(buffer, config.dtb_load_addr.unwrap(), vm.clone())
             .expect("Failed to load DTB images");
     }
 
     // Load BIOS image
-    if let Some(buffer) = vm_imags.bios {
+    if let Some(buffer) = config::get_bios_binary() {
         load_vm_image_from_memory(buffer, config.bios_load_addr.unwrap(), vm.clone())
             .expect("Failed to load BIOS images");
     }

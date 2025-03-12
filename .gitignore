@@ -11,7 +11,3 @@ qemu.log
 rusty-tags.vi
 
 */.axconfig.*
-
-# dev env
-/crates
-/Cargo.toml.bk

@@ -2,7 +2,6 @@
 resolver = "2"
 
 members = ["arceos-vmm"]
-exclude = ["crates"]
 
 [profile.release]
 lto = true
