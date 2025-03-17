@@ -58,10 +58,6 @@ def main():
 
     cargo_toml += """
 
-[patch."https://github.com/arceos-hypervisor/arceos.git".axstd]
-path = "crates/arceos/ulib/axstd"
-[patch."https://github.com/arceos-hypervisor/arceos.git".axhal]
-path = "crates/arceos/modules/axhal"
 [patch."https://github.com/arceos-hypervisor/axvm.git".axvm]
 path = "crates/axvm"
 [patch."https://github.com/arceos-hypervisor/axvcpu.git".axvcpu]

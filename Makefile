@@ -42,6 +42,9 @@ V ?=
 EXTRA_CONFIG ?=
 OUT_CONFIG ?= $(PWD)/.axconfig.toml
 
+COPYFILE ?= 
+FS ?= ext4
+
 # App options
 # A ?= apps/helloworld
 A ?= $(CURDIR)
@@ -210,7 +213,7 @@ disk_img:
 ifneq ($(wildcard $(DISK_IMG)),)
 	@printf "$(YELLOW_C)warning$(END_C): disk image \"$(DISK_IMG)\" already exists!\n"
 else
-	$(call make_disk_image,fat32,$(DISK_IMG))
+	$(call make_disk_image,$(FS),$(DISK_IMG))
 endif
 
 ubuntu_img:
@@ -225,16 +228,32 @@ clean: clean_c
 	rm -rf $(APP)/*.bin $(APP)/*.elf $(APP)/*.asm $(OUT_CONFIG)
 	cargo clean
 
-clean_c:
-	rm -rf ulib/axlibc/build_*
-	rm -rf $(app-objs)
-
 # clean: clean_c
 # 	rm -rf $(APP)/*.bin $(APP)/*.elf
 # 	cargo clean
 
-# clean_c::
-# 	rm -rf ulib/axlibc/build_*
-# 	rm -rf $(app-objs)
+clean_c:
+	rm -rf ulib/axlibc/build_*
+	rm -rf $(app-objs)
 
-.PHONY: all build disasm run justrun debug clippy fmt fmt_c test test_no_fail_fast clean clean_c doc disk_image
+test_vm:
+	@if [ -f "disk.img" ]; then \
+		echo "File exists"; \
+		rm disk.img; \
+	else \
+		echo "File does not exist"; \
+	fi
+	@make disk_img
+	@if [ -d ".tmp" ]; then \
+		echo "directory exists"; \
+	else \
+		echo "Create .tmp directory"; \
+		mkdir -p .tmp; \
+	fi
+	@sudo mount disk.img .tmp/
+	@sudo cp $(COPYFILE) .tmp/
+	@sudo umount .tmp
+	@echo "delete .tmp directory"
+	@sudo rm -rf .tmp
+
+.PHONY: all build disasm run justrun debug clippy fmt fmt_c test test_no_fail_fast clean clean_c doc disk_image test_vm

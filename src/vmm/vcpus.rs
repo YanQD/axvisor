@@ -237,10 +237,10 @@ fn vcpu_run() {
     let vm_id = vm.id();
     let vcpu_id = vcpu.id();
 
-    info!("VM[{}] Vcpu[{}] waiting for running", vm.id(), vcpu.id());
+    info!("VM[{}]-Vcpu[{}] waiting for running", vm.id(), vcpu.id());
     wait_for(vm_id, || vm.running());
 
-    info!("VM[{}] Vcpu[{}] running...", vm.id(), vcpu.id());
+    info!("VM[{}]-Vcpu[{}] running...", vm.id(), vcpu.id());
 
     loop {
         match vm.run_vcpu(vcpu_id) {
