@@ -20,7 +20,7 @@ lazyinit = "0.2"
 timer_list = "0.1.0"
 
 # System dependent modules provided by ArceOS.
-axstd = { path = "/home/yanlien/QCL/vmm/hv/hv_arceos/ulib/axstd", features = [
+axstd = { git = "https://github.com/arceos-hypervisor/arceos.git", branch = "vmm", features = [
     "alloc",
     "paging",
     # "fs",
@@ -45,11 +45,15 @@ percpu = { version = "0.1.4", features = ["arm-el2"] }
 
 [build-dependencies]
 toml = { git = "https://github.com/arceos-hypervisor/toml.git", branch = "no_std" }
-axconfig = { path = "/home/yanlien/QCL/vmm/hv/hv_arceos/modules/axconfig" }
+axconfig = { git = "https://github.com/arceos-hypervisor/arceos.git", branch = "vmm" }
 prettyplease = "0.2"
 quote = "1.0"
 syn = "2.0"
 
+[patch."https://github.com/arceos-hypervisor/arceos.git".axstd]
+path = "crates/hv_arceos/ulib/axstd"
+[patch."https://github.com/arceos-hypervisor/arceos.git".axconfig]
+path = "crates/hv_arceos/modules/axconfig"
 [patch."https://github.com/arceos-hypervisor/axvm.git".axvm]
 path = "crates/axvm"
 [patch."https://github.com/arceos-hypervisor/axvcpu.git".axvcpu]
