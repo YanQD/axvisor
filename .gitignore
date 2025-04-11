@@ -24,5 +24,4 @@ rusty-tags.vi
 tools/*
 
 /arceos-vmm
-Cargo.lock
 .project.toml

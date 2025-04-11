@@ -88,6 +88,3 @@ gicr-paddr = 0xFD46_0000 # uint
 
 # PSCI
 psci-method = "smc" # str
-#psci-method = "hvc" # str
-
-rtc-paddr = 0x0_0000          # uint
