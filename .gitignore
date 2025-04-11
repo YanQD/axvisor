@@ -22,3 +22,7 @@ rusty-tags.vi
 
 # tools should be downloaded from github
 tools/*
+
+/arceos-vmm
+Cargo.lock
+.project.toml

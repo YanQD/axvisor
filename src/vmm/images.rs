@@ -57,7 +57,14 @@ fn load_vm_image_from_memory(image_buffer: &[u8], load_addr: usize, vm: VMRef) -
         image_load_gpa,
         image_buffer.len()
     );
-
+    unsafe {
+        // crate::vmm::cache::cache_clean_invalidate_d(image_load_gpa.into(), image_buffer.len().into());
+        // crate::vmm::cache::cache_clean_invalidate_d(load_addr, image_buffer.len().into());
+        crate::vmm::cache::cache_clean_invalidate_d(0x400000, 0x7000000);
+        // crate::vmm::cache::cache_clean_invalidate_d(0x400000, 0x8000000);
+    }
+    
+    // axhal::arch::dcache_all(axhal::arch::CacheOp::CleanAndInvalidate);
     let image_load_regions = vm.get_image_load_region(image_load_gpa, image_size)?;
 
     for region in image_load_regions {
