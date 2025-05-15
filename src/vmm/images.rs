@@ -142,6 +142,12 @@ mod fs {
                 return ax_err!(NotFound, "DTB load addr is missed");
             }
         };
+        for mem_region in &config.kernel.memory_regions {
+            info!("flush all guest cache GPA: 0x{:x}, Size: 0x{:x}", mem_region.gpa, mem_region.size);
+            unsafe {
+                crate::vmm::cache::cache_clean_invalidate_d(mem_region.gpa, mem_region.size);
+            }
+        }
         Ok(())
     }
 
